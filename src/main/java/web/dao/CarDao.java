@@ -12,8 +12,4 @@ public interface CarDao {
     Car getById(int id);
 
     List<Car> getAll();
-
-    void update(Car car);
-
-    void delete(int id);
 }

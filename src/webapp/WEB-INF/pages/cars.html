@@ -7,45 +7,62 @@
 
     <body>
     <h1>All cars:</h1>
+    <hr/>
+
+    <H3>Вывести перечень машин, согласно условию приведенному ниже.</H3>
+    <form th:action="@{/cars}" method="GET">
+        <label for="carSearchingCountLabel">Введите количество выводимых машин:</label>
+        <input type="number" id="carSearchingCountLabel" name="count" th:value="${num_displayed_cars}" size="8" maxlength="6" required>
+        <button type="submit">Вывести</button>
+    </form>
+    <br/> <br/> <hr/>
+
+    <H2>Вывожу перечень автомобилей, удовлетворяющих введенному условию: </H2>
+    <H4><em>При запросе </em>/cars<em> выводить весь список. <br/>
+        При запросе </em>/cars?count=2<em> должен отобразиться список из 2 машин, <br/>
+        при </em>/cars?count=3<em> - из 3, и тд. При count </em>≥ 5<em> выводить весь список машин.</em></H4>
+
+    <table border="3">
+        <tr>
+            <th style="width: 10%; background-color: chartreuse;">Id</th>
+            <th style="width: 35%; background-color: chartreuse;">Model</th>
+            <th style="width: 30%; background-color: chartreuse;">Color</th>
+            <th style="width: 25%; background-color: chartreuse;">Release Date</th>
+        </tr>
+        <tr th:each="car : ${selection_cars}">
+            <td style="text-align: center;" th:text="${car.getId()}">id</td>
+            <td style="text-align: center;" th:text="${car.getModel()}">Model</td>
+            <td style="text-align: center;" th:text="${car.getColor()}">Color</td>
+            <td style="text-align: center;" th:text="${car.getReleaseDate()}">ReleaseDate</td>
+        </tr>
+    </table>
+    <br/> <br/> <hr/>
+
+    <H3>Сгенерировать новые машины в базу</H3>
+    <form th:action="@{/cars/generate}" method="POST">
+        <label for="carCountLabel">Введите количество генерируемых новых машин:</label>
+        <input type="number" id="carCountLabel" name="car_count" th:value="10" size="8" maxlength="6" required>
+        <button type="submit">Генерировать!</button>
+    </form>
+    <br/> <br/> <hr/>
+
+    <H2>При этом в базе находятся следующие автомобили: </H2>
+    <H4><em>(Вывожу полный перечень)</em></H4>
     <table border="3">
         <tr>
             <th style="width: 10%; background-color: lightcyan;">Id</th>
-            <th style="width: 31%; background-color: lightcyan;">Model</th>
-            <th style="width: 20%; background-color: lightcyan;">Color</th>
-            <th style="width: 15%; background-color: lightcyan;">Release Date</th>
-            <th style="width: 12%; background-color: lightcyan;">Edit</th>
-            <th style="width: 12%; background-color: lightcyan;">Delete</th>
+            <th style="width: 35%; background-color: lightcyan;">Model</th>
+            <th style="width: 30%; background-color: lightcyan;">Color</th>
+            <th style="width: 25%; background-color: lightcyan;">Release Date</th>
         </tr>
-
-        <tr th:each="car : ${car_list}">
-            <td style="text-align: center;" th:utext="${car.getId()}">id</td>
-            <td style="text-align: center;" th:utext="${car.getModel()}">Model</td>
-            <td style="text-align: center;" th:utext="${car.getColor()}">Color</td>
-            <td style="text-align: center;" th:utext="${car.getReleaseDate()}">ReleaseDate</td>
-
-            <td style="text-align: center;"> <em> <a th:href="@{/cars/edit(id_edited_car=${car.getId()})}">Edit</a> </em> </td>
-            <td style="text-align: center;"> <em> <a th:href="@{/cars/delete(id_removed_car=${car.getId()})}">Delete</a> </em> </td>
+        <tr th:each="car : ${all_existing_cars}">
+            <td style="text-align: center;" th:text="${car.getId()}">id</td>
+            <td style="text-align: center;" th:text="${car.getModel()}">Model</td>
+            <td style="text-align: center;" th:text="${car.getColor()}">Color</td>
+            <td style="text-align: center;" th:text="${car.getReleaseDate()}">ReleaseDate</td>
         </tr>
     </table>
     <br/> <br/> <hr/> <br/>
-
-    <form th:method="GET" th:action="@{/cars/create}">
-        <input type="submit" value="Create new car"/>
-    </form>
-    <br/> <br/> <hr/> <br/>
-
-    <H3>Generate test data for a table</H3>
-    <form action="#" th:action="@{/cars/generate}" method="POST">
-        <label for="carCountLabel">Enter the number of cars generated:</label>
-        <input type="number" id="carCountLabel" name="car_count" th:value="5" size="8" maxlength="6" required>
-        <button type="submit">Generate</button>
-    </form>
-    <br/> <br/> <hr/> <br/>
-
-    <form th:method="POST" th:action="@{/cars/delete_all}">
-        <input type="submit" value="Delete all cars"/>
-    </form>
-    <br/> <br/>
 
     </body>
 </html>

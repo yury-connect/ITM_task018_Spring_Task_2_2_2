@@ -22,9 +22,8 @@ public  class CarUtils {
     }
 
 
-        public static Car generateCar() {
+    public static Car generateCar() {
         Faker faker = new Faker(new Locale("ru"));
-//        Transliterator transliterator = Transliterator.getInstance("Russian-Latin/BGN");   // Создание транслитератора
 
         String model = faker.vehicle().make();
         String color = faker.vehicle().color();
