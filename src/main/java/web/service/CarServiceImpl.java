@@ -6,17 +6,16 @@ import web.dao.CarDao;
 import web.model.Car;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 public class CarServiceImpl implements CarService{
 
-    CarDao dao;
+    private CarDao dao;
+
 
 
     @Autowired
-//    @Qualifier("carDaoImpl")
     public CarServiceImpl(CarDao carDao) {
         this.dao = carDao;
     }
@@ -26,12 +25,6 @@ public class CarServiceImpl implements CarService{
     @Override
     public void save(Car car) {
         dao.save(car);
-    }
-
-
-    @Override
-    public Car getById(int id) {
-        return dao.getById(id);
     }
 
 
@@ -52,20 +45,9 @@ public class CarServiceImpl implements CarService{
         if (count == null || count >= 5) {
             result = dao.getAll();
         } else {
-            result = dao.getAll().stream().limit(count).collect(Collectors.toList());
+            List<Car> allCars = dao.getAll();
+            result = allCars.subList(0, Math.min(count, allCars.size())); // subList(int fromIndex, int toIndex)
         }
         return result;
-    }
-
-
-    @Override
-    public void update(Car car) {
-        dao.update(car);
-    }
-
-
-    @Override
-    public void delete(int id) {
-        dao.delete(id);
     }
 }

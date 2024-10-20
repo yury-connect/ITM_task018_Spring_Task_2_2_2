@@ -12,6 +12,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+
 @Configuration
 @EnableWebMvc
 @ComponentScan("web")
@@ -24,17 +25,20 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 
+
     @Bean
-    public SpringResourceTemplateResolver templateResolver() {
+    public SpringResourceTemplateResolver templateResolver() { // настройки Thymeleaf
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/pages/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8"); // Я добавил кодировку для работы с русскими буквами
         return templateResolver;
     }
 
+
     @Bean
-    public SpringTemplateEngine templateEngine() {
+    public SpringTemplateEngine templateEngine() { // настройки Thymeleaf
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
@@ -46,11 +50,12 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
+        resolver.setCharacterEncoding("UTF-8"); // БЕЗ ЭТОЙ СТРОЧКИ РУССКИЕ БУКВЫ НЕ ОТОБРАЖАЮТСЯ В БРАУЗЕРЕ !!!
         registry.viewResolver(resolver);
     }
 
 
-    // Это я подключил для того, чтобы были доступны статические ресурсы, в частности css стили
+    // Это я подключил для того, чтобы были доступны статические ресурсы, в частности (css - стили)
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
